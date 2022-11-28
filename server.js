@@ -1,6 +1,7 @@
 // require packages
 require('dotenv').config()
 const express = require('express')
+const bodyParser = require('body-parser')
 const cors = require('cors')
 const rowdy = require('rowdy-logger')
 const authLockedRoute = require('./controllers/api-v1/authLockedRoute')
@@ -15,6 +16,8 @@ app.use(cors())
 // request body parsing
 app.use(express.urlencoded({ extended: false })) // optional 
 app.use(express.json())
+app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.json())
 
 const myMiddleWare = (req, res, next) => {
   console.log('hello from a middleware')
@@ -26,9 +29,17 @@ const myMiddleWare = (req, res, next) => {
 
 // GET / -- test index route
 // route specific middleware, only will be applied here on this route
-app.get('/', authLockedRoute, (req, res) => {
-  res.json({ msg: 'hello backend 🤖' })
+// app.get('/', authLockedRoute, (req, res) => {  INITIAL CODE 32-34!
+//   res.json({ msg: 'hello backend 🤖' })
+// })
+
+app.get('/home', (req, res) => {
+  res.json({
+    name: 'Bill',
+    age: 99
+  })
 })
+
 
 // controllers
 // prefixing the routes with a semantic version
